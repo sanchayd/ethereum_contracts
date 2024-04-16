@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.13;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/utils/Base64.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
 contract DailyNewsNFT is ERC721, ERC721URIStorage {
-    uint256 private _nextTokenId;
+    uint256 internal _nextTokenId;
 
     struct NewsNFT {
         uint256 tokenId;
@@ -68,10 +68,10 @@ contract DailyNewsNFT is ERC721, ERC721URIStorage {
     }
 
     
-    // Override required functions from ERC721URIStorage
-    // function _burn(uint256 tokenId) internal override(ERC721URIStorage) {
-    //     super._burn(tokenId);
-    // }
+    // Override the _burn function
+    function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
+        super._burn(tokenId);
+    }
 
     function tokenURI(uint256 tokenId) public view override(ERC721, ERC721URIStorage) returns (string memory) {
         return super.tokenURI(tokenId);
