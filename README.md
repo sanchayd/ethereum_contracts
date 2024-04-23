@@ -10,6 +10,76 @@ The main goals of this project are:
 - To create a decentralized and transparent system for recording and verifying news events.
 - To provide a unique and collectible representation of news articles as NFTs.
 - To explore the potential of NFTs in the realm of digital media and journalism.
+- To implement a decentralized voting mechanism for selecting the "News of the Day" among onboarded journalists.
+
+
+### News NFTs as Snapshots of History
+
+The Daily News NFT project not only provides a unique and collectible representation of news articles but also serves as a powerful tool for capturing and preserving historical moments. Just like flipping through the pages of a history book, browsing through the collection of Daily News NFTs allows you to witness the major events that occurred at specific points in time.
+
+Imagine being able to look back and see the NFTs representing the day a groundbreaking scientific discovery was announced, a pivotal political event unfolded, or a cultural phenomenon captured the world's attention. The Daily News NFTs create a chronological record of history, allowing future generations to explore and understand the key moments that defined our time.
+
+By leveraging the power of blockchain technology, the Daily News NFT project ensures that these historical snapshots are permanently recorded and resistant to censorship or alteration. The decentralized nature of NFTs guarantees that the news events captured within them will endure, even if the original sources or articles become unavailable. In essence, the "News of the Day" becomes a "blockchain of news," creating an immutable and transparent record of history.
+
+
+Through the Daily News NFT project, we aim to create a decentralized and immutable archive of history, one news event at a time. By collecting and preserving these NFTs, we are not only creating a valuable digital asset but also contributing to the conservation of our shared human experience.
+
+### Why Own a Daily News NFT?
+
+Owning a Daily News NFT is more than just possessing a unique digital asset; it's a chance to be part of history in the making. Here are some compelling reasons why you should consider adding a Daily News NFT to your collection:
+
+1. **Own a Piece of History:** Each Daily News NFT represents a significant moment in time, capturing the most important news event of the day. By owning these NFTs, you become a custodian of history, preserving and celebrating the key milestones that shape our world.
+
+2. **Unique and Valuable Collectibles:** Daily News NFTs are one-of-a-kind digital collectibles that cannot be replicated or duplicated. As the project gains traction and the collection grows, the rarity and value of these NFTs are likely to increase, making them a potential investment opportunity.
+
+3. **Show Your Support for Decentralized Journalism:** By owning a Daily News NFT, you are supporting the vision of decentralized and transparent journalism. You are contributing to a project that aims to create an immutable and censorship-resistant record of news history, ensuring that the truth remains accessible to future generations.
+
+4. **Engage with a Community of News Enthusiasts:** Owning a Daily News NFT grants you access to a vibrant community of news enthusiasts, journalists, and collectors who share your passion for staying informed and preserving history. Engage in discussions, share insights, and be part of a movement that values the importance of accurate and unbiased news reporting.
+
+5. **Leave a Legacy:** By collecting Daily News NFTs, you are creating a personal legacy that can be passed down to future generations. Your collection will serve as a testament to the news events that mattered to you and the world during your lifetime, providing a unique and valuable inheritance for your descendants.
+
+
+## Decentralized Voting
+
+One of the key features of the Daily News NFT project is the implementation of a decentralized voting system among well-established and onboarded journalists. This voting mechanism allows journalists to collectively select the most significant news event of the day, which will be minted as an NFT.
+
+The decentralized voting process ensures transparency and fairness in the selection of the "News of the Day." By leveraging blockchain technology, we can create a tamper-proof and auditable voting system where each journalist's vote is recorded on the blockchain. This eliminates the need for a central authority and provides a high level of trust and credibility in the selection process.
+
+The benefits of decentralized voting in the Daily News NFT project include:
+
+1. Transparency: All votes cast by journalists are recorded on the blockchain, making the voting process completely transparent and verifiable. Anyone can audit the votes and ensure the integrity of the selection process.
+
+2. Immutability: Once a vote is recorded on the blockchain, it cannot be altered or deleted. This ensures that the voting results are permanent and resistant to tampering.
+
+3. Fairness: Each onboarded journalist has an equal opportunity to participate in the voting process. No single entity can manipulate or control the outcome of the vote.
+
+4. Decentralization: The decentralized nature of the voting system eliminates the need for a central authority to manage or oversee the voting process. This reduces the risk of corruption, censorship, or bias in the selection of the "News of the Day."
+
+By implementing decentralized voting, the Daily News NFT project aims to create a trusted and transparent system for selecting and preserving significant news events as NFTs.
+
+### Approaches to Decentralized Voting
+
+To implement decentralized voting for selecting the "News of the Day," we are considering the following technical approaches:
+
+1. Smart Contract-based Voting:
+   - Develop a separate smart contract specifically for voting functionality.
+   - Onboarded journalists will be assigned unique identities or tokens that grant them voting rights.
+   - Journalists can cast their votes by interacting with the voting smart contract, specifying their preferred news event.
+   - The smart contract will tally the votes and determine the winning news event based on the majority or a predefined voting threshold.
+   - The winning news event will be communicated to the `DailyNewsNFT` contract for minting as an NFT.
+   - The voting process and results will be transparently recorded on the blockchain, ensuring immutability and auditability.
+
+2. Token-based Voting:
+   - Create a custom ERC20 token specifically for voting purposes.
+   - Distribute voting tokens to onboarded journalists based on their credentials and reputation.
+   - Journalists can cast their votes by transferring their voting tokens to designated voting addresses or contracts corresponding to their preferred news events.
+   - The news event with the highest number of voting tokens received will be considered the winner.
+   - The winning news event will be communicated to the `DailyNewsNFT` contract for minting as an NFT.
+   - The token transfers and voting results will be recorded on the blockchain, providing transparency and verifiability.
+
+These are just a couple of potential approaches to implement decentralized voting in the Daily News NFT project. The actual implementation will involve additional considerations such as user authentication, vote verification, and security measures to prevent voter fraud or manipulation.
+
+We will continue to research and evaluate the most suitable approach based on factors such as scalability, user experience, and the specific requirements of our project. The chosen approach will be designed to ensure a fair, transparent, and tamper-proof voting process for selecting the "News of the Day."
 
 ## Technical Details
 
@@ -44,6 +114,16 @@ The project includes a set of unit tests written in JavaScript using the Mocha t
 
 The smart contract can be deployed to the Ethereum network using Truffle's migration scripts. The `truffle-config.js` file contains the necessary configuration settings for deploying to different networks, including local development networks like Ganache and public test networks like Ropsten or Rinkeby.
 
+### Scripts
+
+The project includes two additional scripts to facilitate NFT minting and metadata retrieval:
+
+1. `mint_nft.js`: This script allows you to mint new NFTs by providing the headline and article link. It interacts with the deployed `DailyNewsNFT` contract and mints NFTs for specified accounts. You can customize the script to mint NFTs with different metadata and for different accounts as needed.
+
+2. `get_metadata.js`: This script retrieves the metadata details of minted NFTs. It iterates over a range of token IDs and fetches the metadata associated with each token, including the headline, article link, timestamp, and token URI. The script provides a convenient way to verify and test the metadata stored in the smart contract.
+
+These scripts can be executed using the Truffle CLI and provide a streamlined way to interact with the smart contract for minting NFTs and retrieving their metadata.
+
 ## Getting Started
 
 To get started with the Daily News NFT project, follow these steps:
@@ -54,6 +134,8 @@ To get started with the Daily News NFT project, follow these steps:
 4. Run the unit tests: `truffle test`
 5. Deploy the contract locally: `truffle migrate --network development`
 6. Interact with the contract using the Truffle console: `truffle console --network development`
+7. Mint NFTs using the `mint_nft.js` script: `truffle exec scripts/mint_nft.js --network development`
+8. Retrieve NFT metadata using the `get_metadata.js` script: `truffle exec scripts/get_metadata.js --network development`
 
 For more detailed instructions and examples, please refer to the documentation in the `docs` directory.
 
