@@ -40,11 +40,12 @@
  *
  * https://trufflesuite.com/docs/truffle/getting-started/using-the-truffle-dashboard/
  */
+const HDWalletProvider = require('@truffle/hdwallet-provider');
+require('dotenv').config();
 
-// require('dotenv').config();
-// const { MNEMONIC, PROJECT_ID } = process.env;
-
-// const HDWalletProvider = require('@truffle/hdwallet-provider');
+const mnemonic = process.env.MNEMONIC;
+const infuraApiKey = process.env.INFURA_API_KEY;
+ 
 
 module.exports = {
   /**
@@ -69,6 +70,15 @@ module.exports = {
       port: 7545,            // Using Ganache GUI
       network_id: "*",       // Any network (default: none)
      },
+     
+     sepolia: {
+      provider: () => new HDWalletProvider(mnemonic, `https://sepolia.infura.io/v3/${infuraApiKey}`),
+      network_id: 11155111,
+      gas: 5500000,
+      confirmations: 2,
+      timeoutBlocks: 200,
+      skipDryRun: true
+    }
     //
     // An additional network, but with some advanced options…
     // advanced: {

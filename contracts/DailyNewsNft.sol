@@ -16,6 +16,17 @@ contract DailyNewsNFT is ERC721, ERC721URIStorage {
         uint256 timestamp;
     }
 
+    // TODO: Review the storage of metadata using the newsNFTs mapping.
+    // On-chain metadata storage: By storing the metadata directly in the smart contract
+    // using the newsNFTs mapping, you ensure that the metadata is immutable and tamper-proof.
+    // Once the metadata is set for a token ID, it cannot be modified or deleted, providing
+    // a permanent record of the token's metadata on the blockchain.
+    //
+    // Consider the trade-offs between on-chain and off-chain storage, gas costs,
+    // and flexibility in metadata management. Evaluate alternative approaches,
+    // such as storing only essential metadata on-chain and referencing off-chain
+    // storage for additional details. Update the contract accordingly based on
+    // the project's requirements and scalability needs.
     mapping(uint256 => NewsNFT) public newsNFTs;
 
     constructor() ERC721("DailyNewsNFT", "DNFT") {
