@@ -43,8 +43,9 @@
 const HDWalletProvider = require('@truffle/hdwallet-provider');
 require('dotenv').config();
 
+// Faced issues with connectivity to Sepolia via Infura, so switched to Alchemy.
 const mnemonic = process.env.MNEMONIC;
-const infuraApiKey = process.env.INFURA_API_KEY;
+const alchemySepoliaApiKey = process.env.ALCHEMY_SEPOLIA_API_KEY;
  
 
 module.exports = {
@@ -70,13 +71,14 @@ module.exports = {
       port: 7545,            // Using Ganache GUI
       network_id: "*",       // Any network (default: none)
      },
-     
+
      sepolia: {
-      provider: () => new HDWalletProvider(mnemonic, `https://sepolia.infura.io/v3/${infuraApiKey}`),
+      provider: () => new HDWalletProvider(mnemonic, `https://eth-sepolia.g.alchemy.com/v2/${alchemySepoliaApiKey}`),
       network_id: 11155111,
-      gas: 5500000,
+      gas: 4500000,
       confirmations: 2,
-      timeoutBlocks: 200,
+      timeoutBlocks: 20000,
+      networkCheckTimeoutnetworkCheckTimeout: 100000,
       skipDryRun: true
     }
     //
