@@ -29,11 +29,14 @@ contract DailyNewsNFT is ERC721, ERC721URIStorage {
     // the project's requirements and scalability needs.
     mapping(uint256 => NewsNFT) public newsNFTs;
 
+    // To enable the usecase to fetch all NFT's minted corresponding to a date.
+    mapping(uint256 => NewsNFT[]) public dateToNewsNFTs;
+
     constructor() ERC721("DailyNewsNFT", "DNFT") {
         _nextTokenId = 1;
     }
 
-    function mintNewsNFT(string memory headline, string memory headlineLink) public {
+    function mintNewsNFT(uint256 date, string memory headline, string memory headlineLink) public {
         require(bytes(headline).length > 0, "Headline cannot be empty");
         require(bytes(headlineLink).length > 0, "Headline link cannot be empty");
         
@@ -51,9 +54,14 @@ contract DailyNewsNFT is ERC721, ERC721URIStorage {
         );
 
         newsNFTs[tokenId] = newNewsNFT;
+        dateToNewsNFTs[date].push(newNewsNFT);
 
         string memory newsTokenURI = getTokenURI(tokenId);
         _setTokenURI(tokenId, newsTokenURI);
+    }
+
+    function getNewsNFTsByDate(uint256 date) public view returns (NewsNFT[] memory) {
+        return dateToNewsNFTs[date];
     }
 
     function getTokenURI(uint256 tokenId) public view returns (string memory) {
