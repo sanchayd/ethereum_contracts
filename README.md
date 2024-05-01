@@ -96,6 +96,7 @@ We are using Solidity version 0.8.13 for this project. The choice of this versio
 
 The `DailyNewsNFT` smart contract provides the following key functionalities:
 - `mintNewsNFT`: Allows users to mint a new NFT by providing a headline and a link to the full article. The function assigns a unique token ID to each minted NFT and stores the metadata associated with it.
+- `getNewsNFTsByDate`: Retrieves all the NewsNFTs minted for a specific date.
 - `tokenURI`: Retrieves the metadata URI for a given NFT token ID. The metadata includes the headline, article link, and timestamp of the minted NFT.
 - `ownerOf`: Returns the owner address of a specific NFT token ID.
 - `supportsInterface`: Checks if the contract implements a specific interface, following the ERC721 standard.
@@ -136,11 +137,13 @@ The smart contract can be deployed to the Ethereum network using Truffle's migra
 
 The project includes two additional scripts to facilitate NFT minting and metadata retrieval:
 
-1. `mint_nft.js`: This script allows you to mint new NFTs by providing the headline and article link. It interacts with the deployed `DailyNewsNFT` contract and mints NFTs for specified accounts. You can customize the script to mint NFTs with different metadata and for different accounts as needed.
+1. `mint_nft.js`: This script allows you to mint new NFTs by providing the date, headline and article link. It interacts with the deployed `DailyNewsNFT` contract and mints NFTs for specified accounts. You can customize the script to mint NFTs with different metadata and for different accounts as needed.
 
 2. `get_metadata.js`: This script retrieves the metadata details of minted NFTs. It iterates over a range of token IDs and fetches the metadata associated with each token, including the headline, article link, timestamp, and token URI. The script provides a convenient way to verify and test the metadata stored in the smart contract.
 
 These scripts can be executed using the Truffle CLI and provide a streamlined way to interact with the smart contract for minting NFTs and retrieving their metadata.
+
+The scripts corresponding to sepolia network are mentioned in TESTING-sepolia.md
 
 ## Getting Started
 
@@ -154,6 +157,12 @@ To get started with the Daily News NFT project, follow these steps:
 6. Interact with the contract using the Truffle console: `truffle console --network development`
 7. Mint NFTs using the `mint_nft.js` script: `truffle exec scripts/mint_nft.js --network development`
 8. Retrieve NFT metadata using the `get_metadata.js` script: `truffle exec scripts/get_metadata.js --network development`
+9. Deploy the contract to the Sepolia testnet: `truffle migrate --network sepolia`
+10. Mint NFTs on Sepolia using the `mint_nft_sepolia.js` script: `node scripts/mint_nft_sepolia.js <date> <headline> <article_link>`
+11. Retrieve NFT metadata on Sepolia using the `get_metadata_sepolia.js` script: `node scripts/get_metadata_sepolia.js <token_id>`
+12. Retrieve all NFTs for a specific date on Sepolia using the `get_all_nft_for_date_sepolia.js` script: `node scripts/get_all_nft_for_date_sepolia.js <date>`
+
+
 
 For more detailed instructions and examples, please refer to the documentation in the `docs` directory.
 

@@ -11,7 +11,7 @@ require('dotenv').config();
 const contractJson = JSON.parse(fs.readFileSync('./build/contracts/DailyNewsNFT.json', 'utf8'));
 const contractABI = contractJson.abi;
 
-async function mintNFTSepolia() {
+async function mintNFTSepolia(date, headline, headlineLink) {
   try {
     // Set up the HDWalletProvider with your MetaMask mnemonic and Alchemy API URL from .env file
     console.log("Trying to setup HDWalletProvider");
@@ -30,14 +30,10 @@ async function mintNFTSepolia() {
     const account = accounts[0]; // Use the first account from the derived accounts
 
     // Get the deployed instance of the DailyNewsNFT contract
-    const dailyNewsNFT = new web3.eth.Contract(contractABI, "0xBa7C401E921Aa8CFBd0F37e852c6E83C439f89Be");
-
-    // Set the token metadata
-    const headline = "Bitcoin ETF launches in Hong Kong";
-    const headlineLink = "https://www.bloomberg.com/news/articles/2024-04-29/hong-kong-debuts-spot-bitcoin-btc-ether-eth-etfs-in-crypto-hub-bet";
+    const dailyNewsNFT = new web3.eth.Contract(contractABI, "0x490DA38Fec1a841710A51Ff4FD83873d1Db92940");
 
     // Mint the NFT
-    const result = await dailyNewsNFT.methods.mintNewsNFT(headline, headlineLink).send({ from: account });
+    const result = await dailyNewsNFT.methods.mintNewsNFT(date, headline, headlineLink).send({ from: account });
     console.log("NFT minted successfully!");
     console.log("Transaction hash:", result.transactionHash);
     console.log("Gas used:", result.gasUsed);
@@ -55,7 +51,18 @@ async function mintNFTSepolia() {
     process.exit(1); // Exit the script with an error status
   }
 };
-mintNFTSepolia().catch((error) => {
+
+// Get the date, headline, and headlineLink from command line arguments
+const date = process.argv[2];
+const headline = process.argv[3];
+const headlineLink = process.argv[4];
+
+if (!date || !headline || !headlineLink) {
+  console.error("Please provide a date, headline, and headline link as command line arguments.");
+  process.exit(1);
+}
+
+mintNFTSepolia(date, headline, headlineLink).catch((error) => {
     console.error("Error in mintNFTSepolia:", error);
     process.exit(1); // Exit the script with an error status
   });

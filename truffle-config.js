@@ -45,7 +45,7 @@ require('dotenv').config();
 
 // Faced issues with connectivity to Sepolia via Infura, so switched to Alchemy.
 const mnemonic = process.env.MNEMONIC;
-const alchemySepoliaApiKey = process.env.ALCHEMY_SEPOLIA_API_KEY;
+const alchemyApiUrl = process.env.ALCHEMY_API_URL;
  
 
 module.exports = {
@@ -73,7 +73,7 @@ module.exports = {
      },
 
      sepolia: {
-      provider: () => new HDWalletProvider(mnemonic, `https://eth-sepolia.g.alchemy.com/v2/${alchemySepoliaApiKey}`),
+      provider: () => new HDWalletProvider(mnemonic, alchemyApiUrl),
       network_id: 11155111,
       gas: 4500000,
       confirmations: 2,
