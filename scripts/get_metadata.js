@@ -6,7 +6,7 @@ module.exports = async function(callback) {
     const dailyNewsNFT = await DailyNewsNFT.deployed();
 
     // Set the range of token IDs to retrieve metadata for
-    const startTokenId = 1;
+    const startTokenId = 0;
     const endTokenId = 5;
 
     // Iterate over the range of token IDs and retrieve their metadata
@@ -21,12 +21,22 @@ module.exports = async function(callback) {
         const owner = await dailyNewsNFT.ownerOf(tokenId);
         console.log(`Token Owner: ${owner}`);
 
-        // Get the token metadata
-        const metadata = await dailyNewsNFT.newsNFTs(tokenId);
+        // Decode the Base64-encoded JSON metadata
+        const encodedMetadata = tokenURI.replace('data:application/json;base64,', '');
+        const decodedMetadata = JSON.parse(Buffer.from(encodedMetadata, 'base64').toString());
+
         console.log("Token Metadata:");
-        console.log(`  Headline: ${metadata.headline}`);
-        console.log(`  Headline Link: ${metadata.headlineLink}`);
-        console.log(`  Timestamp: ${metadata.timestamp}`);
+        console.log(` Headline: ${decodedMetadata.headline}`);
+        console.log(` Headline Lists IPFS: ${decodedMetadata.headlineListsIPFS}`);
+
+        // Fetch the headline lists from IPFS (assuming the IPFS hash is stored in the metadata)
+        const headlineListsIPFS = decodedMetadata.headlineListsIPFS;
+        const response = await fetch(`https://ipfs.io/ipfs/${headlineListsIPFS}`);
+        const headlineLists = await response.json();
+
+        console.log("Headline Lists:");
+        console.log(headlineLists);
+
       } catch (error) {
         console.log(`Token ID ${tokenId} does not exist or has no metadata.`);
       }

@@ -7,21 +7,19 @@ module.exports = async function(callback) {
 
     // Set the token metadata for account 1
     const headline1 = "Breaking News: Major Breakthrough in Science!";
-    const headlineLink1 = "https://example.com/news/major-breakthrough";
+    const headlineListsIPFS1 = "QmabcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRST";
 
     // Set the token metadata for account 2
     const headline2 = "World Leaders Gather for Climate Change Summit";
-    const headlineLink2 = "https://example.com/news/climate-change-summit";
+    const headlineListsIPFS2 = "QmzyxwvutsrqponmlkjihgfedcbaZYXWVUTSRQPONMLKJIH";
 
     // Get the account addresses from Ganache
     const accounts = await web3.eth.getAccounts();
     const account1 = accounts[0];
     const account2 = accounts[1];
 
-    const date = 20230601;
-
     // Mint the NFT for account 1
-    const result1 = await dailyNewsNFT.mintNewsNFT(date, headline1, headlineLink1, { from: account1 });
+    const result1 = await dailyNewsNFT.mintNewsNFT(headline1, headlineListsIPFS1, { from: account1 });
     console.log("NFT minted successfully for account 1!");
     console.log("Transaction hash:", result1.tx);
     console.log("Gas used:", result1.receipt.gasUsed);
@@ -34,7 +32,7 @@ module.exports = async function(callback) {
     console.log("NFT owner for account 1:", owner1);
 
     // Mint the NFT for account 2
-    const result2 = await dailyNewsNFT.mintNewsNFT(date, headline2, headlineLink2, { from: account2 });
+    const result2 = await dailyNewsNFT.mintNewsNFT(headline2, headlineListsIPFS2, { from: account2 });
     console.log("NFT minted successfully for account 2!");
     console.log("Transaction hash:", result2.tx);
     console.log("Gas used:", result2.receipt.gasUsed);
