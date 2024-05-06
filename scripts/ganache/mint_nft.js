@@ -7,11 +7,11 @@ module.exports = async function(callback) {
 
     // Set the token metadata for account 1
     const headline1 = "Breaking News: Major Breakthrough in Science!";
-    const headlineListsIPFS1 = "QmabcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRST";
+    const headlineListsIPFS1 = "QmTh6aKFeNZRYz7wBALHc6steiUQmqLzmhzKGp8LaDQVtP";
 
     // Set the token metadata for account 2
     const headline2 = "World Leaders Gather for Climate Change Summit";
-    const headlineListsIPFS2 = "QmzyxwvutsrqponmlkjihgfedcbaZYXWVUTSRQPONMLKJIH";
+    const headlineListsIPFS2 = "QmS8crB4Qe97GdxQzVyGfg5EMywzFWnBpephkhaJTrp4ue";
 
     // Get the account addresses from Ganache
     const accounts = await web3.eth.getAccounts();

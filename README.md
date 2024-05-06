@@ -137,6 +137,12 @@ The `DailyNewsNFT` smart contract provides the following key functionalities:
 - `ownerOf`: Returns the owner address of a specific NFT token ID.
 - `supportsInterface`: Checks if the contract implements a specific interface, following the ERC721 standard.
 
+**NFT Metadata**
+
+The token URI is stored as a base64-encoded string. This base64-encoded string contains the JSON metadata, including the headline and the IPFS hash of the headline lists.
+When someone wants to retrieve the metadata of an NFT, they can fetch the token URI from the blockchain and decode the base64-encoded string to obtain the JSON metadata. They can then extract the relevant information, such as the headline and the IPFS hash of the headline lists, from the decoded JSON.
+By storing the metadata as a base64-encoded string on the blockchain, it allows for efficient storage and retrieval of the token metadata without storing the full JSON object directly on the blockchain. The actual content, such as the headline lists, is stored off-chain on IPFS, and the IPFS hash is included in the token metadata to reference that off-chain data.
+
 ### Development Environment
 
 We are using the Truffle development framework to compile, test, and deploy our smart contract. Truffle provides a convenient and structured way to manage the development lifecycle of Ethereum smart contracts.

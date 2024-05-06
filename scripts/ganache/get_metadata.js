@@ -29,16 +29,19 @@ module.exports = async function(callback) {
         console.log(` Headline: ${decodedMetadata.headline}`);
         console.log(` Headline Lists IPFS: ${decodedMetadata.headlineListsIPFS}`);
 
-        // Fetch the headline lists from IPFS (assuming the IPFS hash is stored in the metadata)
+        // Fetch the headline lists from IPFS using Pinata gateway
         const headlineListsIPFS = decodedMetadata.headlineListsIPFS;
-        const response = await fetch(`https://ipfs.io/ipfs/${headlineListsIPFS}`);
-        const headlineLists = await response.json();
+        const response = await axios.get(`https://gateway.pinata.cloud/ipfs/${headlineListsIPFS}`);
+
+        // Parse the response data as JSON
+        const headlineLists = response.data;
 
         console.log("Headline Lists:");
         console.log(headlineLists);
 
       } catch (error) {
         console.log(`Token ID ${tokenId} does not exist or has no metadata.`);
+        console.log("error: ",error);
       }
     }
 
