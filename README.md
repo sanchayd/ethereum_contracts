@@ -85,6 +85,42 @@ We will continue to research and evaluate the most suitable approach based on fa
 
 The `DailyNewsNFT` smart contract is built using Solidity, the primary programming language for Ethereum smart contracts. We are using the OpenZeppelin library, a widely-used and audited framework for secure smart contract development, to leverage its implementations of the ERC721 token standard for NFTs.
 
+
+## Decentralized Storage with IPFS
+
+Instead of using a centralized storage system like DynamoDB.This project leverages the InterPlanetary File System (IPFS) to store and retrieve headline links in a decentralized manner. IPFS is a distributed file storage system that allows for efficient and resilient storage and sharing of data across a network of nodes.
+
+**Why IPFS?**
+
+We have chosen to integrate IPFS into our project for the following reasons:
+
+Decentralization: IPFS provides a decentralized storage solution, ensuring that the headline links are not reliant on a single centralized server or point of failure. This enhances the availability and reliability of the data.
+Immutability: Once data is stored on IPFS, it becomes content-addressed and immutable. This means that the headline links cannot be altered or tampered with, providing data integrity and trust.
+Efficient Distribution: IPFS enables efficient distribution of data across the network. Nodes can retrieve data from the nearest available peer, reducing latency and bandwidth usage.
+Resilience: IPFS is designed to be resilient against node failures and network disruptions. Even if some nodes go offline, the data remains accessible as long as at least one node hosting the data is available.
+
+**How We Use IPFS**
+In our project, we use IPFS to store and retrieve the headline links associated with our application. We have implemented two scripts to interact with IPFS:
+
+`store_headline_links.js`: This script allows us to store headline links on IPFS. It takes an array of headline links as command-line arguments, prepares the data as a JSON file, and uploads it to IPFS using the Pinata API. Pinata is a pinning service that ensures the data remains accessible on IPFS by persistently storing it on their nodes. The script returns the IPFS hash (content identifier) of the uploaded file.
+`get_metadata.js`: This script retrieves the headline links from IPFS using the IPFS hash obtained from the store_headline_links.js script. It fetches the file from IPFS using the Pinata gateway, parses the JSON data, and extracts the headline links. The script then logs the retrieved headline links to the console.
+
+By utilizing IPFS and Pinata, we ensure that the headline links are stored in a decentralized and immutable manner, providing enhanced accessibility and data integrity.
+
+**Pinata Integration**
+
+To facilitate the storage and retrieval of data on IPFS, we have integrated Pinata, a popular IPFS pinning service. Pinata provides a reliable and easy-to-use API for interacting with IPFS.
+We use Pinata for the following purposes:
+
+Pinning: When we store headline links using the store_headline_links.js script, Pinata ensures that the data is persistently stored on IPFS by pinning it on their nodes. This guarantees that the data remains accessible even if the original node that uploaded it goes offline.
+Gateways: Pinata provides a dedicated IPFS gateway (https://gateway.pinata.cloud/ipfs/{hash}) that allows us to retrieve the stored data using a simple HTTP request. In the get_metadata.js script, we use the Pinata gateway to fetch the file from IPFS.
+
+To use Pinata, we have obtained an API key and stored it securely in a .env file. The scripts read the API key from the environment variables to authenticate with the Pinata API.
+
+## Blockchain Cost Analysis:
+By utilizing IPFS for storing headline links and only storing the IPFS hash reference on-chain, we can significantly reduce the storage costs associated with minting NFTs in the Daily News NFT project. Based on the assumptions mentioned earlier, using IPFS results in a daily cost of 0.000689 ETH ($2.41) compared to 0.003129 ETH ($10.95) when storing the links directly on-chain. This represents a daily cost reduction of 0.002440 ETH ($8.54), or approximately 78%.
+On an annual basis, the cost savings are even more substantial. Storing the links on IPFS would cost 0.251485 ETH ($880.20) per year, while storing them directly on-chain would cost 1.142035 ETH ($3,997.12) per year. By leveraging IPFS, we can save 0.890550 ETH ($3,116.92) annually, providing significant cost efficiency for the project.
+
 ### Solidity Version
 
 We are using Solidity version 0.8.13 for this project. The choice of this version is based on the following considerations:
