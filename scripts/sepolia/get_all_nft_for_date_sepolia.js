@@ -1,88 +1,84 @@
-const Web3 = require('web3');
-const fs = require('fs');
+const { Alchemy, Network } = require('alchemy-sdk');
+const { format, parseISO } = require('date-fns');
+const axios = require('axios');
 require('dotenv').config();
 
-// Read the compiled contract's ABI from the JSON file
-const contractJson = JSON.parse(fs.readFileSync('./build/contracts/DailyNewsNFT.json', 'utf8'));
-const contractABI = contractJson.abi;
+const contractAddress = '0x7931EDEF2a2481f94a4FE847c61FcccA8412d18F'; // Replace with your contract address
+const alchemyApiKey = process.env.ALCHEMY_API_KEY;
 
-async function getNewsNFTsByDate(date) {
+const settings = {
+  apiKey: alchemyApiKey,
+  network: Network.ETH_SEPOLIA,
+};
+
+const alchemy = new Alchemy(settings);
+
+async function fetchAllNFTsByDate(date) {
   try {
-    // Connect to the Sepolia testnet using the Alchemy API URL
-    const web3 = new Web3(process.env.ALCHEMY_API_URL);
+    const nfts = await alchemy.nft.getNftsForContract(contractAddress);
 
-    // Create an instance of the DailyNewsNFT contract
-    const dailyNewsNFT = new web3.eth.Contract(contractABI, "0x490DA38Fec1a841710A51Ff4FD83873d1Db92940");
-
-    // Get the start and end timestamps for the specified date
-    const startTimestamp = new Date(date).setUTCHours(0, 0, 0, 0) / 1000;
-    const endTimestamp = new Date(date).setUTCHours(23, 59, 59, 999) / 1000;
-
-    // Get the start and end block numbers for the specified date
-    const startBlock = await web3.eth.getBlockNumber(startTimestamp);
-    const endBlock = await web3.eth.getBlockNumber(endTimestamp);
-
-    // Get the logs for the NewsMinted event emitted by the contract within the date range
-    const logs = await web3.eth.getPastLogs({
-      fromBlock: startBlock,
-      toBlock: endBlock,
-      address: "0x490DA38Fec1a841710A51Ff4FD83873d1Db92940",
-      topics: [web3.utils.sha3('NewsMinted(uint256,string,uint256)')],
+    // Filter NFTs based on the minting date
+    const filteredNFTs = nfts.nfts.filter(nft => {
+      const mintingDate = parseISO(nft.mint.timestamp);
+      return format(mintingDate, 'yyyy-MM-dd') === date;
     });
 
-    // Parse the logs and retrieve the token IDs and headlines
-    const newsNFTs = logs.map((log) => {
-      const decodedLog = web3.eth.abi.decodeLog(
-        [{ type: 'uint256', name: 'tokenId' }, { type: 'string', name: 'headline' }, { type: 'uint256', name: 'timestamp' }],
-        log.data,
-        log.topics.slice(1)
-      );
-      return {
-        tokenId: decodedLog.tokenId,
-        headline: decodedLog.headline,
-        timestamp: decodedLog.timestamp,
-      };
-    });
+    console.log(`NFTs minted on ${date}:`);
+    console.log(filteredNFTs);
 
-    console.log(`NewsNFTs for date ${date}:`, newsNFTs);
+    // Process the filtered NFT data and retrieve metadata details
+    for (const nft of filteredNFTs) {
+      const tokenId = nft.tokenId;
+      const tokenURI = nft.raw.tokenUri;
 
-    // Retrieve metadata for each NewsNFT
-    for (const newsNFT of newsNFTs) {
-      const tokenURI = await dailyNewsNFT.methods.tokenURI(newsNFT.tokenId).call();
-      console.log(`Token URI for Token ID ${newsNFT.tokenId}:`, tokenURI);
+      if (!tokenURI) {
+        console.log(`\nToken ID: ${tokenId}`);
+        console.log('Token URI not available.');
+        continue;
+      }
 
-      // Decode the Base64-encoded JSON metadata
-      const encodedMetadata = tokenURI.replace('data:application/json;base64,', '');
-      const decodedMetadata = JSON.parse(Buffer.from(encodedMetadata, 'base64').toString());
+      console.log(`\nToken ID: ${tokenId}`);
+      console.log(`Token URI: ${tokenURI}`);
 
-      // Fetch the headline lists from IPFS (assuming the IPFS link is stored in the metadata)
-      const headlineListsIPFS = decodedMetadata.headlineListsIPFS;
-      const response = await fetch(`https://ipfs.io/ipfs/${headlineListsIPFS}`);
-      const headlineLists = await response.json();
+      try {
+        // Decode the Base64-encoded JSON metadata
+        const encodedMetadata = tokenURI.replace('data:application/json;base64,', '');
+        const decodedMetadata = JSON.parse(Buffer.from(encodedMetadata, 'base64').toString());
 
-      // Display the metadata and headline lists
-      console.log(`Metadata for Token ID ${newsNFT.tokenId}:`);
-      console.log(decodedMetadata);
-      console.log('Headline Lists:');
-      console.log(headlineLists);
+        console.log('Token Metadata:');
+        console.log('Headline:', decodedMetadata.headline);
+        console.log('Headline Lists IPFS Hash:', decodedMetadata.headlineListsIPFS);
+
+        // Fetch the headline lists from IPFS using the Pinata gateway
+        const headlineListsIPFS = decodedMetadata.headlineListsIPFS;
+        const response = await axios.get(`https://gateway.pinata.cloud/ipfs/${headlineListsIPFS}`);
+
+        // Parse the response data as JSON
+        const headlineLists = response.data.headlineLinks;
+
+        console.log('Headline Links:');
+        headlineLists.forEach((link, index) => {
+          console.log(`${index + 1}. ${link}`);
+        });
+      } catch (error) {
+        console.log('Error decoding metadata or fetching headline lists:', error.message);
+      }
     }
-
-    process.exit(0); // Exit the script with a success status
   } catch (error) {
-    console.error('Error occurred:', error);
-    process.exit(1); // Exit the script with an error status
+    console.error('Error fetching NFTs:', error);
   }
 }
 
-// Get the date from the command line argument
+// Get the date from command line arguments
 const date = process.argv[2];
 
 if (!date) {
-  console.error('Please provide a date as a command line argument.');
+  console.error('Please provide a date as a command line argument (YYYY-MM-DD).');
   process.exit(1);
 }
 
-getNewsNFTsByDate(date).catch((error) => {
-  console.error('Error in getNewsNFTsByDate:', error);
-  process.exit(1);
+fetchAllNFTsByDate(date).catch((error) => {
+  console.error("Error in fetchMetadataSepolia:", error);
+  process.exit(1); // Exit the script with an error status
 });
+

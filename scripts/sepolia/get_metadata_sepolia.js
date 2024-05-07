@@ -13,7 +13,7 @@ async function fetchMetadataSepolia(tokenId) {
     const web3 = new Web3(process.env.ALCHEMY_API_URL);
 
     // Create an instance of the DailyNewsNFT contract
-    const dailyNewsNFT = new web3.eth.Contract(contractABI, "0x490DA38Fec1a841710A51Ff4FD83873d1Db92940");
+    const dailyNewsNFT = new web3.eth.Contract(contractABI, "0x7931EDEF2a2481f94a4FE847c61FcccA8412d18F");
 
     // Get the token URI for the specified token ID
     const tokenURI = await dailyNewsNFT.methods.tokenURI(tokenId).call();
