@@ -1,7 +1,8 @@
-const { Alchemy, Network } = require('alchemy-sdk');
-const { format, parseISO } = require('date-fns');
-const axios = require('axios');
-require('dotenv').config();
+import { Alchemy, Network } from 'alchemy-sdk';
+import { format, parseISO } from 'date-fns';
+import axios from 'axios';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const contractAddress = '0x7931EDEF2a2481f94a4FE847c61FcccA8412d18F'; // Replace with your contract address
 const alchemyApiKey = process.env.ALCHEMY_API_KEY;
