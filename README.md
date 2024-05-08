@@ -136,6 +136,15 @@ The `DailyNewsNFT` smart contract provides the following key functionalities:
 - `tokenURI`: Retrieves the metadata URI for a given NFT token ID. The metadata includes the headline, article link, and timestamp of the minted NFT.
 - `ownerOf`: Returns the owner address of a specific NFT token ID.
 - `supportsInterface`: Checks if the contract implements a specific interface, following the ERC721 standard.
+### Smart Contract Verification
+
+The following steps were taken:
+
+1. Installed the `truffle-plugin-verify` plugin by running `npm install --save-dev truffle-plugin-verify`.
+2. Configured the plugin in `truffle-config.js` with an Etherscan API key.
+3. Verified the deployed contract using the `truffle run verify` command, which automatically fetched and linked the required OpenZeppelin library addresses.
+
+By verifying the contract source code on Etherscan, users can interact with the deployed contract with confidence, knowing that the on-chain bytecode matches the original source code.
 
 **NFT Metadata**
 

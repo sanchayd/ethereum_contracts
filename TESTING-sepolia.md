@@ -22,6 +22,16 @@ To deploy the `DailyNewsNFT` smart contract to the Sepolia testnet, follow these
 
 After successful deployment, you will see the contract address and other relevant information in the console output. Make note of the contract address, as you will need it to interact with the contract.
 
+### Smart Contract Verification
+
+The following steps were taken:
+
+1. Installed the `truffle-plugin-verify` plugin by running `npm install --save-dev truffle-plugin-verify`.
+2. Configured the plugin in `truffle-config.js` with an Etherscan API key.
+3. Verified the deployed contract using the `truffle run verify DailyNewsNFT@0x7931EDEF2a2481f94a4FE847c61FcccA8412d18F --network sepolia` command, which automatically fetched and linked the required OpenZeppelin library addresses.
+
+By verifying the contract source code on Etherscan, users can interact with the deployed contract with confidence, knowing that the on-chain bytecode matches the original source code.
+
 ## Minting NFTs
 
 To mint NFTs on the Sepolia testnet, use the `mint_nft_sepolia.js` script located in the `scripts` directory. This script allows you to mint new NFTs by providing the headline and the various article links (list all relelvant links from the various news outlets onboarded). 

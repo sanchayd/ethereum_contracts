@@ -46,6 +46,7 @@ require('dotenv').config();
 // Faced issues with connectivity to Sepolia via Infura, so switched to Alchemy.
 const mnemonic = process.env.MNEMONIC;
 const alchemyApiUrl = process.env.ALCHEMY_API_URL;
+const etherscanApiKey = process.env.ETHERSCAN_API_KEY;
  
 
 module.exports = {
@@ -58,6 +59,11 @@ module.exports = {
    *
    * $ truffle test --network <network-name>
    */
+
+  plugins: ['truffle-plugin-verify'],
+  api_keys: {
+    etherscan: etherscanApiKey
+  },
 
   networks: {
     // Useful for testing. The `development` name is special - truffle uses it by default
