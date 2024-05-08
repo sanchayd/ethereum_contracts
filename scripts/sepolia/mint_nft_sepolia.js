@@ -5,9 +5,7 @@ require('dotenv').config();
 const axios = require('axios');
 const FormData = require('form-data');
 
-// Read the compiled contract's ABI and address from the JSON file
-const contractJson = JSON.parse(fs.readFileSync('./build/contracts/DailyNewsNFT.json', 'utf8'));
-const contractABI = contractJson.abi;
+const contractAddress = '0x7931EDEF2a2481f94a4FE847c61FcccA8412d18F';
 
 async function mintNFTSepolia(headline, headlineLinks) {
   try {
@@ -29,9 +27,10 @@ async function mintNFTSepolia(headline, headlineLinks) {
 
     // Upload headline links to IPFS
     const ipfsHash = await storeHeadlineLinksOnIPFS(headlineLinks);
-
+    const contractABI = await fetchContractABI();
+    
     // Get the deployed instance of the DailyNewsNFT contract
-    const dailyNewsNFT = new web3.eth.Contract(contractABI, "0x7931EDEF2a2481f94a4FE847c61FcccA8412d18F");
+    const dailyNewsNFT = new web3.eth.Contract(contractABI, contractAddress);
 
     // Mint the NFT
     const result = await dailyNewsNFT.methods.mintNewsNFT(headline, ipfsHash).send({ from: account });
@@ -53,6 +52,25 @@ async function mintNFTSepolia(headline, headlineLinks) {
     process.exit(1); // Exit the script with an error status
   }
 }
+
+async function fetchContractABI() {
+  try {
+    // Contract needs to be verified
+    const url = `https://api-sepolia.etherscan.io/api?module=contract&action=getabi&address=${contractAddress}&apikey=${process.env.ETHERSCAN_API_KEY}`;
+    const response = await axios.get(url);
+
+    if (response.data.status === '1') {
+      const contractABI = JSON.parse(response.data.result);
+      return contractABI;
+    } else {
+      throw new Error('Failed to fetch contract ABI from Etherscan');
+    }
+  } catch (error) {
+    console.error('Error fetching contract ABI:', error);
+    throw error;
+  }
+}
+
 
 async function storeHeadlineLinksOnIPFS(headlineLinks) {
   try {
