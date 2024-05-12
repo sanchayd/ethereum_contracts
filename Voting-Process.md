@@ -1,7 +1,7 @@
 # NOTD Voting System
 The NOTD Voting System is a decentralized voting mechanism built on the Ethereum blockchain. It allows journalists to vote for the most significant news event of the day, which will be minted as an NFT. The system ensures transparency, immutability, and fairness in the voting process.
 Smart Contract
-The voting functionality is implemented in the VotingContract smart contract. The contract is written in Solidity and includes the following key components:
+The voting functionality is implemented in the NOTDVotingContract smart contract. The contract is written in Solidity and includes the following key components:
 
 Headline struct: Represents a headline with its text and vote count.
 headlines mapping: Stores the headlines for each date.
@@ -11,6 +11,11 @@ addHeadline function: Allows adding a new headline for a specific date.
 vote function: Enables journalists to vote for a headline on a specific date.
 determineWinningHeadline function: Determines the winning headline for a specific date based on the vote counts.
 getWinningHeadline function: Retrieves the winning headline for a specific date.
+
+The contract ensures that journalists can only vote once per date and validates the headline index before allowing a vote. The `VoteCast` event is emitted whenever a vote is cast, providing transparency and auditability.
+
+The `determineWinningHeadline` function is called externally once to determine the winning headline index for a specific date. It iterates over the headlines, finds the one with the highest vote count, and stores the winning index in the `winningHeadlines` mapping. This function is separate from the `getWinningHeadline` function to optimize gas costs and allow for flexibility in determining the winning headline.
+
 
 ## Ganache Testing
 The VotingContract can be tested locally using Ganache, a personal Ethereum blockchain for development and testing purposes. Follow these steps to set up and test the contract:
@@ -54,6 +59,19 @@ Update the contract address in the test scripts located in the scripts/sepolia d
 Run the test scripts with the appropriate commands and parameters.
 
 Please refer to the TESTING-sepolia.md file for detailed instructions on deploying and testing the VotingContract on the Sepolia testnet.
+
+## Frontend
+
+The frontend of the Daily News NFT Voting System is built using HTML, CSS, and JavaScript. The key components of the frontend include:
+
+- Wallet connection: Users can connect their web3 wallet (e.g., MetaMask) to interact with the voting system.
+- Headlines display: The frontend retrieves the headlines for the current date from the smart contract and displays them as a list of clickable headlines.
+- Voting functionality: When a user clicks on a headline, the frontend captures the selected headline and its index. It then interacts with the smart contract to cast the vote using the user's wallet.
+- Vote confirmation: After a successful vote, the frontend displays a confirmation message and updates the UI to reflect the user's vote.
+- Winning headline display: The frontend periodically calls the `getWinningHeadline` function of the smart contract to retrieve the winning headline for the current date and displays it prominently.
+
+The frontend interacts with the smart contract using web3.js library, allowing users to seamlessly connect their wallets, sign transactions, and participate in the voting process.
+
 
 ### Future Enhancements
 
