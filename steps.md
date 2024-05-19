@@ -18,3 +18,4 @@ Step 5: Vote on the Website
 a. Once you have received the NOTD NFT in your MetaMask wallet, go to my voting website.
 b. Connect your MetaMask wallet to the website by clicking on the MetaMask icon in your browser and approving the connection request.
 c. You should now see the voting options on the website. Click on the "Vote" button next to your desired headline to cast your vote.
+d. You'd need SepoliaETH to vote since it's a write on blockchain. You can request test eth from a faucet like https://www.alchemy.com/faucets/ethereum-sepolia. 
