@@ -28,11 +28,11 @@ Welcome to the world of blockchain and voting! This guide will walk you through 
 
 2. Select "Sepolia Test Network" from the list of networks.
 
-## Step 4: Share Your Wallet Address
+## Step 4: Acquire a NOTD NFT
 
-1. In MetaMask, click on your account name to copy your wallet address to the clipboard.
-
-2. Share this address with me so that I can send you a NOTD NFT.
+To vote, you'll need to own a NOTD NFT. You have two options to acquire one:
+a. Share your wallet address with me so that I can send you a NOTD NFT.
+b. Alternatively, you can purchase a NOTD NFT directly from OpenSea, the NFT marketplace. Visit https://testnets.opensea.io/collection/dailynewsnft-2 to browse and buy the available NFTs listed for sale.
 
 ## Step 5: Vote on the Website
 
